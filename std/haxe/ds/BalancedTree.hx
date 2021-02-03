@@ -236,7 +236,7 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 				}
 			}
 		}
-		return {prev:{key:prev.key, value:prev.value}, ident:{ident.key, value:ident.value}, next:{key:next.key, value:next.value>}};
+		return {prev:{key:prev.key, value:prev.value}, ident:{key:ident.key, value:ident.value}, next:{key:next.key, value:next.value>}};
 	}
 
 	/**
