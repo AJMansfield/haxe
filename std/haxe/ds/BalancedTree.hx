@@ -73,6 +73,121 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 	}
 
 	/**
+		Returns the key and bound value of the largest key in this map less
+		than or equal to `key`.
+		
+		If `key` is present in this map, returns it and its bound value.
+		If `key` is not present, the key immediately _before_ this key is found,
+		and it and the corresponding bound value are returned.
+
+		If there is no such key in this map, both the returned key and value
+		will be `null`.
+
+		If `key` is null, the result is unspecified.
+	**/
+	public function floor(key:K): {key:Null<K>, value:Null<V>} {
+		var node = root;
+		var floor = new TreeNode<K, V>(null, null, null, null, 0);
+
+		while (node != null) {
+			var c = compare(key, node.key);
+			if (c == 0)
+				return {key:node.key, value:node.value};
+			if (c < 0) {
+				node = node.left;
+			} else {
+				floor = node; // biggest node we've found that's smaller than the key
+				node = node.right;
+			}
+		}
+		return {key:floor.key, value:floor.value};
+	}
+
+	/**
+		Returns the key and bound value of the smallest key in this map greater
+		than or equal to `key`.
+		
+		If `key` is present in this map, returns it and its bound value.
+		If `key` is not present, the key immediately _after_ this key is found,
+		and it and the corresponding bound value are returned.
+
+		If there is no such key in this map, both the returned key and value
+		will be `null`.
+
+		If `key` is null, the result is unspecified.
+	**/
+	public function ceil(key:K): {key:Null<K>, value:Null<V>} {
+		var node = root;
+		var ceil = new TreeNode<K, V>(null, null, null, null, 0);
+
+		while (node != null) {
+			var c = compare(key, node.key);
+			if (c == 0)
+				return {key:node.key, value:node.value};
+			if (c < 0) {
+				ceil = node; // biggest node we've found that's smaller than the key
+				node = node.left;
+			} else {
+				node = node.right;
+			}
+		}
+		return {key:ceil.key, value:ceil.value};
+	}
+
+	/**
+		Returns the key and bound value of the specified key (if present)
+		and the keys and values that are immediately before and after it in
+		order (also if present).
+		
+		If `key` is present in this map, `ident` in the return struct is
+		that key and its value, otherwise both `ident.key` and `ident.value`
+		are `null`.
+
+		If there is a key in this map before `key`, `prev` in the return
+		struct is the key and value of the key immediately before `key`,
+		otherwise both `prev.key` and `prev.value` are `null`.
+
+		If there is a key this map after `key`, `next` in the return
+		struct is the key and value of the key immediately after `key`,
+		otherwise both `prev.key` and `prev.value` are `null`.
+
+		If `key` is null, the result is unspecified.
+	**/
+	public function neighborhood(key:K): {prev:{key:Null<K>, value:Null<V>}, ident:{key:Null<K>, value:Null<V>}, next:{key:Null<K>, value:Null<V>}} {
+		var node = root;
+		var prev = ident = next = new TreeNode<K, V>(null, null, null, null, 0);
+
+		while (node != null) {
+			var c = compare(key, node.key);
+			if (c == 0) {
+				ident = node;
+				prev = maxChild(node.left);
+				next = minChild(node.right);
+				break;
+			}
+			if (c < 0) {
+				next = node; // smallest node we've found that's bigger than the key
+				node = node.left;
+			} else {
+				prev = node; // biggest node we've found that's smaller than the key
+				node = node.right;
+			}
+		}
+		return {prev:{key:prev.key, value:prev.value}, ident:{ident.key, value:ident.value}, next:{key:next.key, value:next.value>}};
+	}
+
+	function maxChild(node:TreeNode<K, V>): TreeNode<K, V> {
+		while (node.right != null)
+			node = node.right;
+		return node;
+	}
+	function minChild(node:TreeNode<K, V>): TreeNode<K, V> {
+		while (node.left != null)
+			node = node.left;
+		return node;
+	}
+
+	/**
 		Removes the current binding of `key`.
 
 		If `key` has no binding, `this` BalancedTree is unchanged and false is
