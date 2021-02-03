@@ -102,3 +102,86 @@ test3.set(0, 1);
 test3.exists(0) == true;
 test3.exists(2) == false;
 test3.exists(4) == false;
+
+
+var nt = new haxe.ds.BalancedTree<Int, Int>();
+for (k in test.keys()) {
+	nt.set(k, test[k]);
+}
+// no-param versions, get info about whole tree
+nt.floor() == {key: 1, value: 4};
+nt.min() == {key: 1, value: 4};
+nt.ceil() == {key: 27, value: 10};
+nt.max() == {key: 27, value: 10};
+nt.neighborhood() = {
+	prev: {key: 1, value: 4},
+	ident: {key: null, value: null},
+	next: {key: 27, value: 10}
+}
+// queried key is present, keys before and after
+nt.floor(11) == {key: 11, value: 5};
+nt.ceil(11) == {key: 11, value: 5};
+nt.neighborhood(11) == {  
+	prev: {key: 8, value: 2},
+	ident: {key: 11, value: 5},
+	next: {key: 13, value: 1}
+};
+// queried key not present, keys before and after
+nt.floor(18) == {key: 17, value: 3};
+nt.ceil(18) == {key: 22, value: 9};
+nt.neighborhood(18) == { 
+	prev: {key: 17, value: 3},
+	ident: {key: null, value: null},
+	next: {key: 22, value: 9}
+};
+// queried key is present, only keys after
+nt.floor(1) == {key: 1, value: 4};
+nt.ceil(1) == {key: 1, value: 4};
+nt.neighborhood(1) == {
+	prev: {key: null, value: null},
+	ident: {key: 1, value: 4},
+	next: {key: 6, value: 8}
+};
+// queried key not present, only keys after
+nt.floor(0) == {key: null, value: null};
+nt.ceil(0) == {key: 1, value: 4};
+nt.neighborhood(0) == { 
+	prev: {key: null, value: null},
+	ident: {key: null, value: null},
+	next: {key: 1, value: 4}
+};
+// queried key is present, only keys before
+nt.floor(27) == {key: 27, value: 10};
+nt.ceil(27) == {key: 27, value: 10};
+nt.neighborhood(30) == {
+	prev: {key: 25, value: 7},
+	ident: {key: 27, value: 10},
+	next: {key: null, value: null}
+};
+// queried key not present, only keys before
+nt.floor(30) == {key: 27, value: 10};
+nt.ceil(30) == {key: null, value: null};
+nt.neighborhood(30) == {
+	prev: {key: 27, value: 10},
+	ident: {key: null, value: null},
+	next: {key: null, value: null}
+};
+
+var empty = new haxe.ds.BalancedTree<Int, Int>();
+// ensure queries behave properly on an empty tree
+empty.floor(1) == {key: null, value: null};
+empty.floor() == {key: null, value: null};
+empty.min() == {key: null, value: null};
+empty.ceil(1) == {key: null, value: null};
+empty.ceil() == {key: null, value: null};
+empty.max() == {key: null, value: null};
+empty.neighborhood(1) == {
+	prev: {key:null, value:null},
+	ident: {key:null, value:null},
+	next: {key:null, value:null}
+};
+empty.neighborhood() == {
+	prev: {key:null, value:null},
+	ident: {key:null, value:null},
+	next: {key:null, value:null}
+};
