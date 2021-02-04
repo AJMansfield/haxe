@@ -103,6 +103,8 @@ test3.exists(0) == true;
 test3.exists(2) == false;
 test3.exists(4) == false;
 
+typedef Entry<K,V> = {key:Null<K>, value:Null<V>};
+typedef Neighborhood<K,V> = {prev:Entry<K,V>, ident:Entry<K,V>, next:Entry<K,V>};
 
 var entryEq = function(
 	a:Entry<Dynamic,Dynamic>,
