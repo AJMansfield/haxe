@@ -22,6 +22,9 @@
 
 package haxe.ds;
 
+typedef Entry<K,V> = {key:Null<K>, value:Null<V>};
+typedef Neighborhood<K,V> = {prev:Entry<K,V>, ident:Entry<K,V>, next:Entry<K,V>};
+
 /**
 	BalancedTree allows key-value mapping with arbitrary keys, as long as they
 	can be ordered. By default, `Reflect.compare` is used in the `compare`
@@ -34,6 +37,7 @@ package haxe.ds;
 **/
 class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 	var root:TreeNode<K, V>;
+
 
 	/**
 		Creates a new BalancedTree, which is initially empty.
@@ -90,7 +94,7 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		
 		The returned struct is guaranteed non-null (only the fields may be null).
 	**/
-	public function floor(?key:K): {key:Null<K>, value:Null<V>} {
+	public function floor(?key:K): Entry<K,V> {
 		var node = root;
 		var floor = new TreeNode<K, V>(null, null, null, null, 0);
 
@@ -130,7 +134,7 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		
 		The returned struct is guaranteed non-null (only the fields may be null).
 	**/
-	public function ceil(?key:K): {key:Null<K>, value:Null<V>} {
+	public function ceil(?key:K): Entry<K,V> {
 		var node = root;
 		var ceil = new TreeNode<K, V>(null, null, null, null, 0);
 
@@ -159,7 +163,7 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		
 		The returned struct is guaranteed non-null (only the fields may be null).
 	**/
-	public function min(): {key:Null<K>, value:Null<V>} {
+	public function min(): Entry<K,V> {
 		var node = minChild(root);
 		if (node == null) {
 			return {key:null, value:null};
@@ -175,7 +179,7 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		
 		The returned struct is guaranteed non-null (only the fields may be null).
 	**/
-	public function max(): {key:Null<K>, value:Null<V>} {
+	public function max(): Entry<K,V> {
 		var node = maxChild(root);
 		if (node == null) {
 			return {key:null, value:null};
@@ -211,7 +215,7 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		The returned struct and the sub-structs `prev`, `ident`, and `next`
 		are guaranteed non-null (only the `key` and `value` fields may be null).
 	**/
-	public function neighborhood(?key:K): {prev:{key:Null<K>, value:Null<V>}, ident:{key:Null<K>, value:Null<V>}, next:{key:Null<K>, value:Null<V>}} {
+	public function neighborhood(?key:K): Neighborhood<K,V> {
 		var node = root;
 		var prev, ident, next;
 		var empty = new TreeNode<K, V>(null, null, null, null, 0);
