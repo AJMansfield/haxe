@@ -222,15 +222,17 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		prev = ident = next = empty;
 
 		if (key == null) {
-			prev = minChild(node);
-			next = maxChild(node);
+			if (node != null) {
+				prev = minChild(node);
+				next = maxChild(node);
+			}
 		} else {
 			while (node != null) {
 				var c = compare(key, node.key);
 				if (c == 0) {
 					ident = node;
-					prev = maxChild(node.left);
-					next = minChild(node.right);
+					if (node.left != null) prev = maxChild(node.left);
+					if (node.right != null) next = minChild(node.right);
 					break;
 				}
 				if (c < 0) {
@@ -242,8 +244,6 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 				}
 			}
 		}
-		if (prev == null) prev = empty;
-		if (next == null) next = empty;
 		return {prev:{key:prev.key, value:prev.value}, ident:{key:ident.key, value:ident.value}, next:{key:next.key, value:next.value}};
 	}
 
