@@ -105,101 +105,67 @@ test3.exists(4) == false;
 
 
 var entryEq = function(
-	a:{key:Null<Dynamic>, value:Null<Dynamic>},
-	b:{key:Null<Dynamic>, value:Null<Dynamic>},
+	a:Entry<Dynamic,Dynamic>,
+	b:Entry<Dynamic,Dynamic>,
 	?pos : haxe.PosInfos
 ) {
 	eq(a.key, b.key, pos);
 	eq(a.value, b.value, pos);
 };
 var neighEq = function(
-	a:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}},
-	b:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}},
+	a:Neighborhood<Dynamic,Dynamic>,
+	b:Neighborhood<Dynamic,Dynamic>,
 	?pos : haxe.PosInfos
 ) {
 	entryEq(a.prev, b.prev, pos);
 	entryEq(a.ident, b.ident, pos);
 	entryEq(a.next, b.next, pos);
 };
+var nullEntry:Entry<Dynamic,Dynamic> = {key: null, value: null};
+var nullNeigh:Neighborhood<Dynamic,Dynamic> = {prev: nullEntry, ident: nullEntry, next: nullEntry};
 
 var nt = new haxe.ds.BalancedTree<Int, Int>();
 for (k in test.keys()) {
 	nt.set(k, test[k]);
 }
 // no-param versions, get info about whole tree
-entryEq(nt.floor(), {key: 1, value: 4});
-entryEq(nt.min(), {key: 1, value: 4});
-entryEq(nt.ceil(), {key: 27, value: 10});
-entryEq(nt.max(), {key: 27, value: 10});
-neighEq(nt.neighborhood(), {
-	prev: {key: 1, value: 4},
-	ident: {key: null, value: null},
-	next: {key: 27, value: 10}
-});
+entryEq({key: 1, value: 4}, nt.floor());
+entryEq({key: 1, value: 4}, nt.min());
+entryEq({key: 27, value: 10}, nt.ceil());
+entryEq({key: 27, value: 10}, nt.max());
+neighEq({prev: {key: 1, value: 4}, ident: nullEntry, next: {key: 27, value: 10}}, nt.neighborhood());
 // queried key is present, keys before and after
-entryEq(nt.floor(11), {key: 11, value: 5});
-entryEq(nt.ceil(11), {key: 11, value: 5});
-neighEq(nt.neighborhood(11), {
-	prev: {key: 8, value: 2},
-	ident: {key: 11, value: 5},
-	next: {key: 13, value: 1}
-});
+entryEq({key: 11, value: 5}, nt.floor(11));
+entryEq({key: 11, value: 5}, nt.ceil(11));
+neighEq({prev: {key: 8, value: 2}, ident: {key: 11, value: 5}, next: {key: 13, value: 1}}, nt.neighborhood(11));
 // queried key not present, keys before and after
-entryEq(nt.floor(18), {key: 17, value: 3});
-entryEq(nt.ceil(18), {key: 22, value: 9});
-neighEq(nt.neighborhood(18), {
-	prev: {key: 17, value: 3},
-	ident: {key: null, value: null},
-	next: {key: 22, value: 9}
-});
+entryEq({key: 17, value: 3}, nt.floor(18));
+entryEq({key: 22, value: 9}, nt.ceil(18));
+neighEq({prev: {key: 17, value: 3}, ident: nullEntry, next: {key: 22, value: 9}}, nt.neighborhood(18));
 // queried key is present, only keys after
-entryEq(nt.floor(1), {key: 1, value: 4});
-entryEq(nt.ceil(1), {key: 1, value: 4});
-neighEq(nt.neighborhood(1), {
-	prev: {key: null, value: null},
-	ident: {key: 1, value: 4},
-	next: {key: 6, value: 8}
-});
+entryEq({key: 1, value: 4}, nt.floor(1));
+entryEq({key: 1, value: 4}, nt.ceil(1));
+neighEq({prev: nullEntry, ident: {key: 1, value: 4}, next: {key: 6, value: 8}}, nt.neighborhood(1));
 // queried key not present, only keys after
-entryEq(nt.floor(0), {key: null, value: null});
-entryEq(nt.ceil(0), {key: 1, value: 4});
-neighEq(nt.neighborhood(0), {
-	prev: {key: null, value: null},
-	ident: {key: null, value: null},
-	next: {key: 1, value: 4}
-});
+entryEq(nullEntry, nt.floor(0));
+entryEq({key: 1, value: 4}, nt.ceil(0));
+neighEq({prev: nullEntry, ident: nullEntry, next: {key: 1, value: 4}}, nt.neighborhood(0));
 // queried key is present, only keys before
-entryEq(nt.floor(27), {key: 27, value: 10});
-entryEq(nt.ceil(27), {key: 27, value: 10});
-neighEq(nt.neighborhood(30), {
-	prev: {key: 25, value: 7},
-	ident: {key: 27, value: 10},
-	next: {key: null, value: null}
-});
+entryEq({key: 27, value: 10}, nt.floor(27));
+entryEq({key: 27, value: 10}, nt.ceil(27));
+neighEq({prev: {key: 25, value: 7}, ident: {key: 27, value: 10}, next: nullEntry}, nt.neighborhood(30));
 // queried key not present, only keys before
-entryEq(nt.floor(30), {key: 27, value: 10});
-entryEq(nt.ceil(30), {key: null, value: null});
-neighEq(nt.neighborhood(30), {
-	prev: {key: 27, value: 10},
-	ident: {key: null, value: null},
-	next: {key: null, value: null}
-});
+entryEq({key: 27, value: 10}, nt.floor(30));
+entryEq(nullEntry, nt.ceil(30));
+neighEq({prev: {key: 27, value: 10}, ident: nullEntry, next: nullEntry}, nt.neighborhood(30));
 
 var empty = new haxe.ds.BalancedTree<Int, Int>();
 // ensure queries behave properly on an empty tree
-entryEq(empty.floor(1), {key: null, value: null});
-entryEq(empty.floor(), {key: null, value: null});
-entryEq(empty.min(), {key: null, value: null});
-entryEq(empty.ceil(1), {key: null, value: null});
-entryEq(empty.ceil(), {key: null, value: null});
-entryEq(empty.max(), {key: null, value: null});
-neighEq(empty.neighborhood(1), {
-	prev: {key:null, value:null},
-	ident: {key:null, value:null},
-	next: {key:null, value:null}
-});
-neighEq(empty.neighborhood(), {
-	prev: {key:null, value:null},
-	ident: {key:null, value:null},
-	next: {key:null, value:null}
-});
+entryEq(nullEntry, empty.floor(1));
+entryEq(nullEntry, empty.floor());
+entryEq(nullEntry, empty.min());
+entryEq(nullEntry, empty.ceil(1));
+entryEq(nullEntry, empty.ceil());
+entryEq(nullEntry, empty.max());
+neighEq(nullNeigh, empty.neighborhood(1));
+neighEq(nullNeigh, empty.neighborhood());
