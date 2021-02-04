@@ -154,7 +154,7 @@ neighEq({prev: nullEntry, ident: nullEntry, next: {key: 1, value: 4}}, nt.neighb
 // queried key is present, only keys before
 entryEq({key: 27, value: 10}, nt.floor(27));
 entryEq({key: 27, value: 10}, nt.ceil(27));
-neighEq({prev: {key: 25, value: 7}, ident: {key: 27, value: 10}, next: nullEntry}, nt.neighborhood(30));
+neighEq({prev: {key: 25, value: 7}, ident: {key: 27, value: 10}, next: nullEntry}, nt.neighborhood(27));
 // queried key not present, only keys before
 entryEq({key: 27, value: 10}, nt.floor(30));
 entryEq(nullEntry, nt.ceil(30));
