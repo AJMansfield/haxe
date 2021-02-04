@@ -22,9 +22,6 @@
 
 package haxe.ds;
 
-typedef Entry<K,V> = {key:Null<K>, value:Null<V>};
-typedef Neighborhood<K,V> = {prev:Entry<K,V>, ident:Entry<K,V>, next:Entry<K,V>};
-
 /**
 	BalancedTree allows key-value mapping with arbitrary keys, as long as they
 	can be ordered. By default, `Reflect.compare` is used in the `compare`
@@ -433,6 +430,15 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 		root = null;
 	}
 }
+
+/**
+	A key and its associated value.
+**/
+typedef Entry<K,V> = {key:Null<K>, value:Null<V>};
+/**
+	The entry `ident` corresponding to the queried key, plus the entries immediately before and after it in the mapping.
+**/
+typedef Neighborhood<K,V> = {prev:Entry<K,V>, ident:Entry<K,V>, next:Entry<K,V>};
 
 /**
 	A tree node of `haxe.ds.BalancedTree`.
