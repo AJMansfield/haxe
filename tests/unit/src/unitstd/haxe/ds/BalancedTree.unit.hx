@@ -104,64 +104,77 @@ test3.exists(2) == false;
 test3.exists(4) == false;
 
 
+var entryEq = function(a:{key:Dynamic, value:Dynamic}, b:{key:Dynamic, value:Dynamic}) {
+	eq(a.key, b.key);
+	eq(a.value, b.value);
+};
+var neighEq = function(
+	a:{prev:{key:Dynamic, value:Dynamic}, ident:{key:Dynamic, value:Dynamic}, next:{key:Dynamic, value:Dynamic}},
+	b:{prev:{key:Dynamic, value:Dynamic}, ident:{key:Dynamic, value:Dynamic}, next:{key:Dynamic, value:Dynamic}}
+){
+	entryEq(a.prev, b.prev);
+	entryEq(a.ident, b.ident);
+	entryEq(a.next, b.next);
+};
+
 var nt = new haxe.ds.BalancedTree<Int, Int>();
 for (k in test.keys()) {
 	nt.set(k, test[k]);
 }
 // no-param versions, get info about whole tree
-eq(nt.floor(), {key: 1, value: 4});
-eq(nt.min(), {key: 1, value: 4});
-eq(nt.ceil(), {key: 27, value: 10});
-eq(nt.max(), {key: 27, value: 10});
-eq(nt.neighborhood(), {
+entryEq(nt.floor(), {key: 1, value: 4});
+entryEq(nt.min(), {key: 1, value: 4});
+entryEq(nt.ceil(), {key: 27, value: 10});
+entryEq(nt.max(), {key: 27, value: 10});
+neighEq(nt.neighborhood(), {
 	prev: {key: 1, value: 4},
 	ident: {key: null, value: null},
 	next: {key: 27, value: 10}
 });
 // queried key is present, keys before and after
-eq(nt.floor(11), {key: 11, value: 5});
-eq(nt.ceil(11), {key: 11, value: 5});
-eq(nt.neighborhood(11), {
+entryEq(nt.floor(11), {key: 11, value: 5});
+entryEq(nt.ceil(11), {key: 11, value: 5});
+neighEq(nt.neighborhood(11), {
 	prev: {key: 8, value: 2},
 	ident: {key: 11, value: 5},
 	next: {key: 13, value: 1}
 });
 // queried key not present, keys before and after
-eq(nt.floor(18), {key: 17, value: 3});
-eq(nt.ceil(18), {key: 22, value: 9});
-eq(nt.neighborhood(18), {
+entryEq(nt.floor(18), {key: 17, value: 3});
+entryEq(nt.ceil(18), {key: 22, value: 9});
+neighEq(nt.neighborhood(18), {
 	prev: {key: 17, value: 3},
 	ident: {key: null, value: null},
 	next: {key: 22, value: 9}
 });
 // queried key is present, only keys after
-eq(nt.floor(1), {key: 1, value: 4});
-eq(nt.ceil(1), {key: 1, value: 4});
-eq(nt.neighborhood(1), {
+entryEq(nt.floor(1), {key: 1, value: 4});
+entryEq(nt.ceil(1), {key: 1, value: 4});
+neighEq(nt.neighborhood(1), {
 	prev: {key: null, value: null},
 	ident: {key: 1, value: 4},
 	next: {key: 6, value: 8}
 });
 // queried key not present, only keys after
-eq(nt.floor(0), {key: null, value: null});
-eq(nt.ceil(0), {key: 1, value: 4});
-eq(nt.neighborhood(0), {
+entryEq(nt.floor(0), {key: null, value: null});
+entryEq(nt.ceil(0), {key: 1, value: 4});
+neighEq(nt.neighborhood(0), {
 	prev: {key: null, value: null},
 	ident: {key: null, value: null},
 	next: {key: 1, value: 4}
 });
 // queried key is present, only keys before
-eq(nt.floor(27), {key: 27, value: 10});
-eq(nt.ceil(27), {key: 27, value: 10});
-eq(nt.neighborhood(30), {
+entryEq(nt.floor(27), {key: 27, value: 10});
+entryEq(nt.ceil(27), {key: 27, value: 10});
+neighEq(nt.neighborhood(30), {
 	prev: {key: 25, value: 7},
 	ident: {key: 27, value: 10},
 	next: {key: null, value: null}
 });
 // queried key not present, only keys before
-eq(nt.floor(30), {key: 27, value: 10});
-eq(nt.ceil(30), {key: null, value: null});
-eq(nt.neighborhood(30), {
+entryEq(nt.floor(30), {key: 27, value: 10});
+entryEq(nt.ceil(30), {key: null, value: null});
+neighEq(nt.neighborhood(30), {
 	prev: {key: 27, value: 10},
 	ident: {key: null, value: null},
 	next: {key: null, value: null}
@@ -169,18 +182,18 @@ eq(nt.neighborhood(30), {
 
 var empty = new haxe.ds.BalancedTree<Int, Int>();
 // ensure queries behave properly on an empty tree
-eq(empty.floor(1), {key: null, value: null});
-eq(empty.floor(), {key: null, value: null});
-eq(empty.min(), {key: null, value: null});
-eq(empty.ceil(1), {key: null, value: null});
-eq(empty.ceil(), {key: null, value: null});
-eq(empty.max(), {key: null, value: null});
-eq(empty.neighborhood(1), {
+entryEq(empty.floor(1), {key: null, value: null});
+entryEq(empty.floor(), {key: null, value: null});
+entryEq(empty.min(), {key: null, value: null});
+entryEq(empty.ceil(1), {key: null, value: null});
+entryEq(empty.ceil(), {key: null, value: null});
+entryEq(empty.max(), {key: null, value: null});
+neighEq(empty.neighborhood(1), {
 	prev: {key:null, value:null},
 	ident: {key:null, value:null},
 	next: {key:null, value:null}
 });
-eq(empty.neighborhood(), {
+neighEq(empty.neighborhood(), {
 	prev: {key:null, value:null},
 	ident: {key:null, value:null},
 	next: {key:null, value:null}
