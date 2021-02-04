@@ -284,7 +284,10 @@ jobs:
       - name: Cache APT packages
         uses: actions/cache@v2
         with:
-          path: /var/cache/apt/archives
+          path: |
+            /var/cache/apt/archives/**.deb
+            !/var/cache/apt/archives/partial
+            !/var/cache/apt/archives/lock
           key: ${{ runner.os }}-apt
 
       - name: Install dependencies
