@@ -213,7 +213,8 @@ class BalancedTree<K, V> implements haxe.Constraints.IMap<K, V> {
 	**/
 	public function neighborhood(?key:K): {prev:{key:Null<K>, value:Null<V>}, ident:{key:Null<K>, value:Null<V>}, next:{key:Null<K>, value:Null<V>}} {
 		var node = root;
-		var prev = ident = next = new TreeNode<K, V>(null, null, null, null, 0);
+		var prev, ident, next;
+		prev = ident = next = new TreeNode<K, V>(null, null, null, null, 0);
 
 		if (key == null) {
 			prev = minChild(node);
