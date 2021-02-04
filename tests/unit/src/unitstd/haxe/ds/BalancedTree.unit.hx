@@ -106,18 +106,20 @@ test3.exists(4) == false;
 
 var entryEq = function(
 	a:{key:Null<Dynamic>, value:Null<Dynamic>},
-	b:{key:Null<Dynamic>, value:Null<Dynamic>}
+	b:{key:Null<Dynamic>, value:Null<Dynamic>},
+	?pos : haxe.PosInfos
 ) {
-	eq(a.key, b.key);
-	eq(a.value, b.value);
+	eq(a.key, b.key, pos);
+	eq(a.value, b.value, pos);
 };
 var neighEq = function(
 	a:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}},
-	b:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}}
+	b:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}},
+	?pos : haxe.PosInfos
 ) {
-	entryEq(a.prev, b.prev);
-	entryEq(a.ident, b.ident);
-	entryEq(a.next, b.next);
+	entryEq(a.prev, b.prev, pos);
+	entryEq(a.ident, b.ident, pos);
+	entryEq(a.next, b.next, pos);
 };
 
 var nt = new haxe.ds.BalancedTree<Int, Int>();
