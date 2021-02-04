@@ -103,28 +103,27 @@ test3.exists(0) == true;
 test3.exists(2) == false;
 test3.exists(4) == false;
 
-typedef Entry<K,V> = {key:Null<K>, value:Null<V>};
-typedef Neighborhood<K,V> = {prev:Entry<K,V>, ident:Entry<K,V>, next:Entry<K,V>};
+
 
 var entryEq = function(
-	a:Entry<Dynamic,Dynamic>,
-	b:Entry<Dynamic,Dynamic>,
+	a:haxe.ds.BalancedTree.Entry<Dynamic,Dynamic>,
+	b:haxe.ds.BalancedTree.Entry<Dynamic,Dynamic>,
 	?pos : haxe.PosInfos
 ) {
 	eq(a.key, b.key, pos);
 	eq(a.value, b.value, pos);
 };
 var neighEq = function(
-	a:Neighborhood<Dynamic,Dynamic>,
-	b:Neighborhood<Dynamic,Dynamic>,
+	a:haxe.ds.BalancedTree.Neighborhood<Dynamic,Dynamic>,
+	b:haxe.ds.BalancedTree.Neighborhood<Dynamic,Dynamic>,
 	?pos : haxe.PosInfos
 ) {
 	entryEq(a.prev, b.prev, pos);
 	entryEq(a.ident, b.ident, pos);
 	entryEq(a.next, b.next, pos);
 };
-var nullEntry:Entry<Dynamic,Dynamic> = {key: null, value: null};
-var nullNeigh:Neighborhood<Dynamic,Dynamic> = {prev: nullEntry, ident: nullEntry, next: nullEntry};
+var nullEntry = {key: null, value: null};
+var nullNeigh = {prev: nullEntry, ident: nullEntry, next: nullEntry};
 
 var nt = new haxe.ds.BalancedTree<Int, Int>();
 for (k in test.keys()) {
