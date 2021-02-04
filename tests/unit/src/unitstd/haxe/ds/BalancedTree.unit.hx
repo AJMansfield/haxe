@@ -104,13 +104,17 @@ test3.exists(2) == false;
 test3.exists(4) == false;
 
 
-typedef EntryT = { var key:Null<Dynamic>; var value:Null<Dynamic>; };
-var entryEq = function(a:EntryT, b:EntryT) {
+var entryEq = function(
+	a:{key:Null<Dynamic>, value:Null<Dynamic>},
+	b:{key:Null<Dynamic>, value:Null<Dynamic>}
+) {
 	eq(a.key, b.key);
 	eq(a.value, b.value);
 };
-typedef NeighT = { var prev:EntryT; var ident:EntryT; var next:EntryT; },
-var neighEq = function(a:NeighT, b:NeighT) {
+var neighEq = function(
+	a:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}},
+	b:{prev:{key:Null<Dynamic>, value:Null<Dynamic>}, ident:{key:Null<Dynamic>, value:Null<Dynamic>}, next:{key:Null<Dynamic>, value:Null<Dynamic>}}
+) {
 	entryEq(a.prev, b.prev);
 	entryEq(a.ident, b.ident);
 	entryEq(a.next, b.next);
