@@ -71,7 +71,13 @@ jobs:
       - name: Prepend Chocolatey path
         shell: pwsh
         run: Write-Host "::add-path::C:\ProgramData\chocolatey\bin"
-      
+
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: ~/.opam/
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
+
       - name: Install OCaml and OCaml libraries
         shell: pwsh
         run: |
@@ -178,6 +184,12 @@ jobs:
       - name: Prepend Chocolatey path
         shell: pwsh
         run: Write-Host "::add-path::C:\ProgramData\chocolatey\bin"
+
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: ~/.opam/
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
       
       - name: Install OCaml and OCaml libraries
         shell: pwsh
@@ -274,6 +286,12 @@ jobs:
           sudo add-apt-repository ppa:haxe/ocaml -y # provides newer version of mbedtls
           sudo apt-get update -qqy
           sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl
+
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: ~/.opam/
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
       
       - name: Install OCaml libraries
         run: |
@@ -381,6 +399,12 @@ jobs:
           brew install cpanminus
           cpanm IPC::System::Simple
           cpanm String::ShellQuote
+
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: ~/.opam/
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
       
       - name: Install OCaml libraries
         run: |
