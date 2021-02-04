@@ -104,12 +104,12 @@ test3.exists(2) == false;
 test3.exists(4) == false;
 
 
-typedef EntryT = {key:Null<Dynamic>, value:Null<Dynamic>};
+typedef EntryT = { var key:Null<Dynamic>; var value:Null<Dynamic>; };
 var entryEq = function(a:EntryT, b:EntryT) {
 	eq(a.key, b.key);
 	eq(a.value, b.value);
 };
-typedef NeighT = {prev:EntryT, ident:EntryT, next:EntryT},
+typedef NeighT = { var prev:EntryT; var ident:EntryT; var next:EntryT; },
 var neighEq = function(a:NeighT, b:NeighT) {
 	entryEq(a.prev, b.prev);
 	entryEq(a.ident, b.ident);
