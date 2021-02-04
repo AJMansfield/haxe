@@ -113,11 +113,11 @@ nt.floor() == {key: 1, value: 4};
 nt.min() == {key: 1, value: 4};
 nt.ceil() == {key: 27, value: 10};
 nt.max() == {key: 27, value: 10};
-nt.neighborhood() = {
+nt.neighborhood() == {
 	prev: {key: 1, value: 4},
 	ident: {key: null, value: null},
 	next: {key: 27, value: 10}
-}
+};
 // queried key is present, keys before and after
 nt.floor(11) == {key: 11, value: 5};
 nt.ceil(11) == {key: 11, value: 5};
