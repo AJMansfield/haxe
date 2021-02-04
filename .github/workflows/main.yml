@@ -75,9 +75,7 @@ jobs:
       - name: Cache OCaml libraries
         uses: actions/cache@v2
         with:
-          path: |
-            ~/.opam/
-            ~/.bash_profile
+          path: ~/.opam/
           key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
       
       - name: Install OCaml and OCaml libraries
@@ -190,9 +188,7 @@ jobs:
       - name: Cache OCaml libraries
         uses: actions/cache@v2
         with:
-          path: |
-            ~/.opam/
-            ~/.bash_profile
+          path: ~/.opam/
           key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
       
       - name: Install OCaml and OCaml libraries
@@ -294,9 +290,7 @@ jobs:
       - name: Cache OCaml libraries
         uses: actions/cache@v2
         with:
-          path: |
-            ~/.opam/
-            ~/.bash_profile
+          path: ~/.opam/
           key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
 
       - name: Install OCaml Libraries
@@ -409,9 +403,7 @@ jobs:
       - name: Cache OCaml libraries
         uses: actions/cache@v2
         with:
-          path: |
-            ~/.opam/
-            ~/.bash_profile
+          path: ~/.opam/
           key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
           
       - name: Install OCaml libraries

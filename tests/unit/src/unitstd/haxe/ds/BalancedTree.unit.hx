@@ -104,14 +104,13 @@ test3.exists(2) == false;
 test3.exists(4) == false;
 
 
-var entryEq = function(a:{key:Dynamic, value:Dynamic}, b:{key:Dynamic, value:Dynamic}) {
+typedef EntryT = {key:Null<Dynamic>, value:Null<Dynamic>};
+var entryEq = function(a:EntryT, b:EntryT) {
 	eq(a.key, b.key);
 	eq(a.value, b.value);
 };
-var neighEq = function(
-	a:{prev:{key:Dynamic, value:Dynamic}, ident:{key:Dynamic, value:Dynamic}, next:{key:Dynamic, value:Dynamic}},
-	b:{prev:{key:Dynamic, value:Dynamic}, ident:{key:Dynamic, value:Dynamic}, next:{key:Dynamic, value:Dynamic}}
-){
+typedef NeighT = {prev:EntryT, ident:EntryT, next:EntryT},
+var neighEq = function(a:NeighT, b:NeighT) {
 	entryEq(a.prev, b.prev);
 	entryEq(a.ident, b.ident);
 	entryEq(a.next, b.next);
