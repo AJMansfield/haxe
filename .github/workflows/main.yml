@@ -281,15 +281,6 @@ jobs:
       - name: Print Neko version
         run: neko -version 2>&1
 
-      - name: Cache APT packages
-        uses: actions/cache@v2
-        with:
-          path: |
-            /var/cache/apt/archives/**.deb
-            !/var/cache/apt/archives/partial
-            !/var/cache/apt/archives/lock
-          key: ${{ runner.os }}-apt
-
       - name: Install dependencies
         run: |
           set -ex
