@@ -72,6 +72,14 @@ jobs:
         shell: pwsh
         run: Write-Host "::add-path::C:\ProgramData\chocolatey\bin"
       
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.opam/
+            ~/.bash_profile
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
+      
       - name: Install OCaml and OCaml libraries
         shell: pwsh
         run: |
@@ -179,6 +187,14 @@ jobs:
         shell: pwsh
         run: Write-Host "::add-path::C:\ProgramData\chocolatey\bin"
       
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.opam/
+            ~/.bash_profile
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
+      
       - name: Install OCaml and OCaml libraries
         shell: pwsh
         run: |
@@ -275,16 +291,15 @@ jobs:
           sudo apt-get update -qqy
           sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl
       
-      - name: Cache OCaml Packages
+      - name: Cache OCaml libraries
         uses: actions/cache@v2
-        id: cache
         with:
           path: |
-            /home/runner/.opam/
+            ~/.opam/
             ~/.bash_profile
           key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
 
-      - name: Install OCaml libraries
+      - name: Install OCaml Libraries
         run: |
           set -ex
           opam init # --disable-sandboxing
@@ -390,7 +405,15 @@ jobs:
           brew install cpanminus
           cpanm IPC::System::Simple
           cpanm String::ShellQuote
-      
+
+      - name: Cache OCaml libraries
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.opam/
+            ~/.bash_profile
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
+          
       - name: Install OCaml libraries
         run: |
           set -ex
